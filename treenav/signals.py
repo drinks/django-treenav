@@ -1,4 +1,3 @@
-from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
 from django.db.models.signals import post_save
 
@@ -21,7 +20,7 @@ def treenav_save_other_object_handler(sender, instance, created, **kwargs):
         cache.set(cache_key, menu_models)
     # only attempt to update MenuItem if sender is known to be referenced
     if sender in menu_models:
-        ct = ContentType.objects.get_for_model(sender)
+        ct = django.contrib.contenttypes.models.ContentType.objects.get_for_model(sender)
         items = MenuItem.objects.filter(content_type=ct, object_id=instance.pk)
         for item in items:
             if item.href != instance.get_absolute_url():
